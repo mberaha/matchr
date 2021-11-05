@@ -6,29 +6,29 @@
 
 //'@export
 // [[Rcpp::export]]
-void hello_word() {
+void hello_world() {
   Rcpp::Rcout << "Hello" << std::endl;
   return;
 }
 
 
-arma::mat pairwise_dist(const arma::mat &x, const arma::mat &y) {
+arma::mat pairwise_dist(const arma::mat &x, const arma::mat &y, double p=2.0) {
   arma::mat out(x.n_rows, x.n_rows);
+
   #pragma omp parallel for
-  for (int i = 0; i < x.n_rows; ++i)
-  {
+  for (int i = 0; i < x.n_rows; ++i) {
     arma::rowvec curr = x.row(i);
     out.row(i) = arma::sum(
-      arma::abs(y.each_row() - curr), 1)
-                 .t();
+      arma::pow(arma::abs(y.each_row() - curr), p), 1).t();
   }
-  return out;
+  return arma::pow(out, 1.0/p);
 }
 
 //'@export
 // [[Rcpp::export]]
-arma::mat tranport_plan(arma::mat x_supp, arma::vec x_weight,
-                        arma::mat y_supp, arma::vec y_weight, int max_iter=1000) {
+arma::mat tranport_plan(const arma::mat &x_supp, arma::vec x_weight,
+                        const arma::mat &y_supp, arma::vec y_weight, double p=2.0,
+                        int max_iter=1000) {
   int n1 = x_weight.n_elem;
   int n2 = y_weight.n_elem;
   arma::vec alpha = arma::zeros<arma::vec>(n1);
@@ -39,7 +39,7 @@ arma::mat tranport_plan(arma::mat x_supp, arma::vec x_weight,
   double cost;
 
   // Compute pairwise distance (cost) matrix
-  arma::mat cost_mat = pairwise_dist(x_supp, y_supp);
+  arma::mat cost_mat = pairwise_dist(x_supp, y_supp, p);
 
   status = EMD_wrap(
     n1, n1, x_weight.memptr(), y_weight.memptr(), cost_mat.memptr(),
@@ -50,14 +50,14 @@ arma::mat tranport_plan(arma::mat x_supp, arma::vec x_weight,
 
 //'@export
 // [[Rcpp::export]]
-arma::uvec match(arma::mat x, arma::mat y, int max_iter=1000) {
+arma::uvec match(const arma::mat &x, const arma::mat &y, double p=2.0, int max_iter=1000) {
   int n1 = x.n_rows;
   int n2 = y.n_rows;
   assert(n1 == n2);
 
   arma::vec w = arma::ones(n1) / n1;
 
-  arma::mat plan = tranport_plan(x, w, y, w, max_iter);
+  arma::mat plan = tranport_plan(x, w, y, w, p, max_iter);
   arma::umat perm_mat = arma::conv_to<arma::umat>::from(plan * n1);
 
   arma::uvec perm =  perm_mat * arma::regspace<arma::uvec>(

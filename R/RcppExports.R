@@ -2,17 +2,17 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #'@export
-hello_word <- function() {
-    invisible(.Call(`_matchr_hello_word`))
+hello_world <- function() {
+    invisible(.Call(`_matchr_hello_world`))
 }
 
 #'@export
-tranport_plan <- function(x_supp, x_weight, y_supp, y_weight, max_iter = 1000L) {
-    .Call(`_matchr_tranport_plan`, x_supp, x_weight, y_supp, y_weight, max_iter)
+tranport_plan <- function(x_supp, x_weight, y_supp, y_weight, p = 2.0, max_iter = 1000L) {
+    .Call(`_matchr_tranport_plan`, x_supp, x_weight, y_supp, y_weight, p, max_iter)
 }
 
 #'@export
-match <- function(x, y, max_iter = 1000L) {
-    .Call(`_matchr_match`, x, y, max_iter)
+match <- function(x, y, p = 2.0, max_iter = 1000L) {
+    .Call(`_matchr_match`, x, y, p, max_iter)
 }
 

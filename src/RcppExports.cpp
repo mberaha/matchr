@@ -11,48 +11,50 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// hello_word
-void hello_word();
-RcppExport SEXP _matchr_hello_word() {
+// hello_world
+void hello_world();
+RcppExport SEXP _matchr_hello_world() {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    hello_word();
+    hello_world();
     return R_NilValue;
 END_RCPP
 }
 // tranport_plan
-arma::mat tranport_plan(arma::mat x_supp, arma::vec x_weight, arma::mat y_supp, arma::vec y_weight, int max_iter);
-RcppExport SEXP _matchr_tranport_plan(SEXP x_suppSEXP, SEXP x_weightSEXP, SEXP y_suppSEXP, SEXP y_weightSEXP, SEXP max_iterSEXP) {
+arma::mat tranport_plan(const arma::mat& x_supp, arma::vec x_weight, const arma::mat& y_supp, arma::vec y_weight, double p, int max_iter);
+RcppExport SEXP _matchr_tranport_plan(SEXP x_suppSEXP, SEXP x_weightSEXP, SEXP y_suppSEXP, SEXP y_weightSEXP, SEXP pSEXP, SEXP max_iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x_supp(x_suppSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x_supp(x_suppSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type x_weight(x_weightSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type y_supp(y_suppSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type y_supp(y_suppSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type y_weight(y_weightSEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
-    rcpp_result_gen = Rcpp::wrap(tranport_plan(x_supp, x_weight, y_supp, y_weight, max_iter));
+    rcpp_result_gen = Rcpp::wrap(tranport_plan(x_supp, x_weight, y_supp, y_weight, p, max_iter));
     return rcpp_result_gen;
 END_RCPP
 }
 // match
-arma::uvec match(arma::mat x, arma::mat y, int max_iter);
-RcppExport SEXP _matchr_match(SEXP xSEXP, SEXP ySEXP, SEXP max_iterSEXP) {
+arma::uvec match(const arma::mat& x, const arma::mat& y, double p, int max_iter);
+RcppExport SEXP _matchr_match(SEXP xSEXP, SEXP ySEXP, SEXP pSEXP, SEXP max_iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
-    rcpp_result_gen = Rcpp::wrap(match(x, y, max_iter));
+    rcpp_result_gen = Rcpp::wrap(match(x, y, p, max_iter));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_matchr_hello_word", (DL_FUNC) &_matchr_hello_word, 0},
-    {"_matchr_tranport_plan", (DL_FUNC) &_matchr_tranport_plan, 5},
-    {"_matchr_match", (DL_FUNC) &_matchr_match, 3},
+    {"_matchr_hello_world", (DL_FUNC) &_matchr_hello_world, 0},
+    {"_matchr_tranport_plan", (DL_FUNC) &_matchr_tranport_plan, 6},
+    {"_matchr_match", (DL_FUNC) &_matchr_match, 4},
     {NULL, NULL, 0}
 };
 
