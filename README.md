@@ -5,11 +5,13 @@ Example usage
 
 ```
 devtools::install_github("https://github.com/mberaha/matchr")
+library(matchr)
+
 x = matrix(rnorm(6), nrow=3, ncol=2)
 y = matrix(rnorm(6), nrow=3, ncol=2)
 w = c(1, 1, 1) / 3
-tranport_plan(x, w, y, w)
 
+tranport_plan(x, w, y, w)
 m = match(x, y)
 
 plot(x[, 1], x[, 2],  pch=16, xlim = c(-3, 3), ylim=c(-3, 3))
