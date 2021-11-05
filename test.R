@@ -1,8 +1,4 @@
-devtools::document()
-devtools::install()
-
-matchr::hello_word()
-
+devtools::install_github("https://github.com/mberaha/matchr")
 library(matchr)
 
 x = matrix(rnorm(6), nrow=3, ncol=2)
@@ -17,7 +13,3 @@ points(y[, 1], y[, 2],  pch=16, col="red")
 for (i in 1:3) {
   lines(c(x[i, 1], y[m[i], 1]), c(x[i, 2], y[m[i], 2]))
 }
-
-
-devtools::install_github("https://github.com/mberaha/matchr")
-3
